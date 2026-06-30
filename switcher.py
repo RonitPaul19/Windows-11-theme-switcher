@@ -183,59 +183,115 @@ EVERFOREST_CSS = """:root {
 }"""
 
 NOIR_CSS = """:root {
-    --accent: #999999;
-    --alert-bg: rgb(128, 128, 128);
-    --alert-border: rgb(128, 128, 128);
-    --alert-text: rgb(192, 192, 192);
-    --base: #0a0a0a;
-    --black: #000000;
-    --blue: #808080;
-    --border-dark: #141414;
-    --btn-hover-bg: rgb(200, 200, 200);
-    --button-bg: #2a2a2a;
-    --button-hover: rgb(200, 200, 200);
-    --button-pressed: #333333;
-    --calendar-bg: rgb(20, 20, 20);
-    --calendar-text: rgb(128, 128, 128);
-    --cancel-icon: rgb(128, 128, 128);
-    --cancel-label: rgb(128, 128, 128);
-    --card-bg: rgb(20, 20, 20);
-    --chart: #808080;
-    --day-active-bg: rgb(15, 15, 15);
-    --day-active-border: rgb(42, 42, 42);
-    --disabled: #333333;
-    --edge: #808080;
-    --firefox: #808080;
-    --gray: #666666;
-    --green: #808080;
-    --groove-hover: rgb(200, 200, 200);
-    --hourly-bg: #808080;
-    --icon-dim: rgb(192, 192, 192);
-    --lavender: #999999;
-    --maroon: #808080;
-    --mauve: #999999;
-    --media-bg: rgb(20, 20, 20);
-    --muted: #666666;
-    --muted-alt: #808080;
-    --paused: #666666;
-    --popup-bg: rgb(20, 20, 20);
-    --popup-hover: rgb(42, 42, 42);
-    --spotify: #808080;
-    --subtext0: #c0c0c0;
-    --subtext1: #c0c0c0;
-    --surface0: #1a1a1a;
-    --surface1: #2a2a2a;
-    --surface2: #333333;
-    --teal: #808080;
-    --text: #e0e0e0;
-    --text-dim: rgb(192, 192, 192);
+    --accent: #ffffff;
+    --alert-bg: rgb(255, 255, 255);
+    --alert-border: rgb(255, 255, 255);
+    --alert-text: rgb(0, 0, 0);
+    --base: #000000;
+    --black: #ffffff;
+    --blue: #ffffff;
+    --border-dark: #ffffff;
+    --btn-hover-bg: rgb(255, 255, 255);
+    --button-bg: #000000;
+    --button-hover: rgb(255, 255, 255);
+    --button-pressed: #ffffff;
+    --calendar-bg: rgb(0, 0, 0);
+    --calendar-text: rgb(255, 255, 255);
+    --cancel-icon: rgb(255, 255, 255);
+    --cancel-label: rgb(255, 255, 255);
+    --card-bg: rgb(0, 0, 0);
+    --chart: #ffffff;
+    --day-active-bg: rgb(0, 0, 0);
+    --day-active-border: rgb(255, 255, 255);
+    --disabled: #555555;
+    --edge: #ffffff;
+    --firefox: #ffffff;
+    --gray: #ffffff;
+    --green: #ffffff;
+    --groove-hover: rgb(255, 255, 255);
+    --hourly-bg: #ffffff;
+    --icon-dim: rgb(128, 128, 128);
+    --lavender: #ffffff;
+    --maroon: #ffffff;
+    --mauve: #ffffff;
+    --media-bg: rgb(0, 0, 0);
+    --muted: #777777;
+    --muted-alt: #999999;
+    --paused: #777777;
+    --popup-bg: rgb(0, 0, 0);
+    --popup-hover: rgb(255, 255, 255);
+    --spotify: #ffffff;
+    --subtext0: #cccccc;
+    --subtext1: #ffffff;
+    --surface0: #000000;
+    --surface1: #ffffff;
+    --surface2: #555555;
+    --teal: #ffffff;
+    --text: #ffffff;
+    --text-dim: rgb(200, 200, 200);
     --text-muted: rgb(128, 128, 128);
-    --transparent: #0a0a0a;
-    --transparent-base: #0a0a0a;
-    --transparent-dark: #0a0a0a;
-    --weather-bg: rgb(10, 10, 10);
-    --white: #ffffff;
-    --yellow: #808080;
+    --transparent: #000000;
+    --transparent-base: #000000;
+    --transparent-dark: #000000;
+    --weather-bg: rgb(0, 0, 0);
+    --white: #000000;
+    --yellow: #ffffff;
+}"""
+
+EINK_CSS = """:root {
+    --accent: #ffffff;
+    --alert-bg: rgb(20, 20, 20);
+    --alert-border: rgb(55, 55, 55);
+    --alert-text: rgb(255, 255, 255);
+    --base: #000000;
+    --black: #ffffff;
+    --blue: #ffffff;
+    --border-dark: #2f2f2f;
+    --btn-hover-bg: rgb(55, 55, 55);
+    --button-bg: #171717;
+    --button-hover: rgb(55, 55, 55);
+    --button-pressed: #2f2f2f;
+    --calendar-bg: rgb(10, 10, 10);
+    --calendar-text: rgb(255, 255, 255);
+    --cancel-icon: rgb(255, 255, 255);
+    --cancel-label: rgb(255, 255, 255);
+    --card-bg: rgb(10, 10, 10);
+    --chart: #ffffff;
+    --day-active-bg: rgb(20, 20, 20);
+    --day-active-border: rgb(55, 55, 55);
+    --disabled: #555555;
+    --edge: #ffffff;
+    --firefox: #ffffff;
+    --gray: #777777;
+    --green: #ffffff;
+    --groove-hover: rgb(55, 55, 55);
+    --hourly-bg: #ffffff;
+    --icon-dim: rgb(175, 175, 175);
+    --lavender: #ffffff;
+    --maroon: #ffffff;
+    --mauve: #ffffff;
+    --media-bg: rgb(10, 10, 10);
+    --muted: #666666;
+    --muted-alt: #888888;
+    --paused: #666666;
+    --popup-bg: rgb(5, 5, 5);
+    --popup-hover: rgb(20, 20, 20);
+    --spotify: #ffffff;
+    --subtext0: #cccccc;
+    --subtext1: #ffffff;
+    --surface0: #0f0f0f;
+    --surface1: #171717;
+    --surface2: #2f2f2f;
+    --teal: #ffffff;
+    --text: #ffffff;
+    --text-dim: rgb(195, 195, 195);
+    --text-muted: rgb(135, 135, 135);
+    --transparent: #000000;
+    --transparent-base: #000000;
+    --transparent-dark: #000000;
+    --weather-bg: rgb(0, 0, 0);
+    --white: #000000;
+    --yellow: #ffffff;
 }"""
 
 THEMES = {
@@ -262,7 +318,7 @@ THEMES = {
         "vscode_theme": "Everforest Pro Dark",
         "glazewm_focused": "#7FBBB3",
         "glazewm_other": "#4F585E",
-        "wallpaper": str(Path.home() / "Downloads/wallpapers/everforsest.png"),
+        "wallpaper": str(Path.home() / "Downloads/wallpapers/everforest.png"),
         "yasb_css": EVERFOREST_CSS,
         "neovim_theme": "everforest",
     },
@@ -271,9 +327,18 @@ THEMES = {
         "vscode_theme": "Monochrome Dark",
         "glazewm_focused": "#808080",
         "glazewm_other": "#333333",
-        "wallpaper": str(Path.home() / "Downloads/wallpapers/noir.jpg"),
+        "wallpaper": str(Path.home() / "Downloads/wallpapers/eink.jpg"),
         "yasb_css": NOIR_CSS,
         "neovim_theme": "moonfly",
+    },
+    "E-Ink": {
+        "terminal_scheme": "E-Ink",
+        "vscode_theme": "Light+",
+        "glazewm_focused": "#000000",
+        "glazewm_other": "#999999",
+        "wallpaper": str(Path.home() / "Downloads/wallpapers/eink.jpg"),
+        "yasb_css": EINK_CSS,
+        "neovim_theme": "e-ink",
     },
 }
 
@@ -343,6 +408,9 @@ def update_glazewm_border(focused_color, other_color):
         elif stripped == 'other_windows:':
             in_other = True
             in_focused = False
+        elif not line.startswith(' ') and not line.startswith('\t') and stripped:
+            in_focused = False
+            in_other = False
         elif stripped.startswith('color:'):
             if in_focused:
                 line = re.sub(r"color:\s*'#[A-Fa-f0-9]+'", f"color: '{focused_color}'", line)
@@ -378,8 +446,8 @@ def update_neovim_theme(colorscheme):
              f":lua require('config.theme').load()<CR>"],
             capture_output=True, text=True, timeout=5,
         )
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"  Neovim IPC skipped (not running or not on PATH): {e}")
 
 
 def set_wallpaper(image_path):
