@@ -298,6 +298,7 @@ THEMES = {
     "Catppuccin": {
         "terminal_scheme": "Catppuccin Mocha",
         "vscode_theme": "Catppuccin Mocha",
+        "cursor_color": "#F5E0DC",
         "glazewm_focused": "#89B4FA",
         "glazewm_other": "#585B70",
         "wallpaper": str(Path.home() / "Downloads/wallpapers/catppuccin.jpg"),
@@ -307,6 +308,7 @@ THEMES = {
     "RosePine": {
         "terminal_scheme": "Rose Pine",
         "vscode_theme": "Rosé Pine",
+        "cursor_color": "#6e6a86",
         "glazewm_focused": "#9CCFD8",
         "glazewm_other": "#A3AABE",
         "wallpaper": str(Path.home() / "Downloads/wallpapers/rose-pine.jpg"),
@@ -316,6 +318,7 @@ THEMES = {
     "Everforest": {
         "terminal_scheme": "Everforest Dark",
         "vscode_theme": "Everforest Pro Dark",
+        "cursor_color": "#D3C6AA",
         "glazewm_focused": "#7FBBB3",
         "glazewm_other": "#4F585E",
         "wallpaper": str(Path.home() / "Downloads/wallpapers/everforest.png"),
@@ -325,6 +328,7 @@ THEMES = {
     "Noir": {
         "terminal_scheme": "Noir",
         "vscode_theme": "Monochrome Dark",
+        "cursor_color": "#FFFFFF",
         "glazewm_focused": "#808080",
         "glazewm_other": "#333333",
         "wallpaper": str(Path.home() / "Downloads/wallpapers/eink.jpg"),
@@ -333,7 +337,8 @@ THEMES = {
     },
     "E-Ink": {
         "terminal_scheme": "E-Ink",
-        "vscode_theme": "Light+",
+        "vscode_theme": "E-Ink",
+        "cursor_color": "#000000",
         "glazewm_focused": "#000000",
         "glazewm_other": "#999999",
         "wallpaper": str(Path.home() / "Downloads/wallpapers/eink.jpg"),
@@ -366,12 +371,17 @@ def update_json_file(path, key, value):
     return data
 
 
-def update_terminal_theme(scheme_name):
+def update_terminal_theme(scheme_name, cursor_color):
     content = read_file(TERMINAL_CONFIG)
     data = json_parse(content)
     data["profiles"]["defaults"]["colorScheme"] = scheme_name
+    for scheme in data.get("schemes", []):
+        if scheme.get("name") == scheme_name:
+            scheme["cursorColor"] = cursor_color
+            break
     write_file(TERMINAL_CONFIG, json.dumps(data, indent=2, ensure_ascii=False))
     print(f"  Terminal scheme -> {scheme_name}")
+    print(f"  Terminal cursor color -> {cursor_color}")
 
 
 def update_vscode_theme(theme_name):
@@ -380,6 +390,17 @@ def update_vscode_theme(theme_name):
     data["workbench.colorTheme"] = theme_name
     write_file(VSCODE_CONFIG, json.dumps(data, indent=2, ensure_ascii=False))
     print(f"  VSCode theme -> {theme_name}")
+
+
+def update_vscode_terminal_cursor(theme_name, cursor_color):
+    content = read_file(VSCODE_CONFIG)
+    data = json_parse(content)
+    color_customizations = data.setdefault("workbench.colorCustomizations", {})
+    theme_key = f"[{theme_name}]"
+    theme_overrides = color_customizations.setdefault(theme_key, {})
+    theme_overrides["terminalCursor.foreground"] = cursor_color
+    write_file(VSCODE_CONFIG, json.dumps(data, indent=2, ensure_ascii=False))
+    print(f"  VSCode terminal cursor -> {cursor_color}")
 
 
 def update_yasb_css(css_root):
@@ -466,8 +487,9 @@ def apply_theme(theme_name):
     theme = THEMES[theme_name]
     print(f"\nApplying theme: {theme_name}")
 
-    update_terminal_theme(theme["terminal_scheme"])
+    update_terminal_theme(theme["terminal_scheme"], theme["cursor_color"])
     update_vscode_theme(theme["vscode_theme"])
+    update_vscode_terminal_cursor(theme["vscode_theme"], theme["cursor_color"])
     update_neovim_theme(theme["neovim_theme"])
     update_yasb_css(theme["yasb_css"])
     update_glazewm_border(theme["glazewm_focused"], theme["glazewm_other"])
