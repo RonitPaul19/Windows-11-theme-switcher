@@ -294,6 +294,62 @@ EINK_CSS = """:root {
     --yellow: #ffffff;
 }"""
 
+TOKYO_NIGHT_CSS = """:root {
+    --accent: #bb9af7;
+    --alert-bg: rgb(224, 175, 104);
+    --alert-border: rgb(224, 175, 104);
+    --alert-text: rgb(169, 177, 214);
+    --base: #1a1b26;
+    --black: #000000;
+    --blue: #7aa2f7;
+    --border-dark: #1f2335;
+    --btn-hover-bg: rgb(192, 202, 245);
+    --button-bg: #24283b;
+    --button-hover: rgb(192, 202, 245);
+    --button-pressed: #3b4261;
+    --calendar-bg: rgb(31, 35, 53);
+    --calendar-text: rgb(169, 177, 214);
+    --cancel-icon: rgb(247, 118, 142);
+    --cancel-label: rgb(247, 118, 142);
+    --card-bg: rgb(31, 35, 53);
+    --chart: #ff9e64;
+    --day-active-bg: rgb(26, 27, 38);
+    --day-active-border: rgb(59, 66, 97);
+    --disabled: #565f89;
+    --edge: #7aa2f7;
+    --firefox: #f7768e;
+    --gray: #565f89;
+    --green: #9ece6a;
+    --groove-hover: rgb(192, 202, 245);
+    --hourly-bg: #9ece6a;
+    --icon-dim: rgb(192, 202, 245);
+    --lavender: #bb9af7;
+    --maroon: #f7768e;
+    --mauve: #bb9af7;
+    --media-bg: rgb(31, 35, 53);
+    --muted: #565f89;
+    --muted-alt: #6f7bb6;
+    --paused: #565f89;
+    --popup-bg: rgb(31, 35, 53);
+    --popup-hover: rgb(36, 40, 59);
+    --spotify: #9ece6a;
+    --subtext0: #a9b1d6;
+    --subtext1: #c0caf5;
+    --surface0: #1f2335;
+    --surface1: #24283b;
+    --surface2: #3b4261;
+    --teal: #1abc9c;
+    --text: #c0caf5;
+    --text-dim: rgb(192, 202, 245);
+    --text-muted: rgb(169, 177, 214);
+    --transparent: #1a1b26;
+    --transparent-base: #1a1b26;
+    --transparent-dark: #1a1b26;
+    --weather-bg: rgb(26, 27, 38);
+    --white: #ffffff;
+    --yellow: #e0af68;
+}"""
+
 THEMES = {
     "Catppuccin": {
         "terminal_scheme": "Catppuccin Mocha",
@@ -331,7 +387,7 @@ THEMES = {
         "cursor_color": "#FFFFFF",
         "glazewm_focused": "#808080",
         "glazewm_other": "#333333",
-        "wallpaper": str(Path(__file__).parent / "wallpapers" / "noir.jpg"),
+        "wallpaper": str(Path(__file__).parent / "wallpapers" / "eink.jpg"),
         "yasb_css": NOIR_CSS,
         "neovim_theme": "moonfly",
     },
@@ -344,6 +400,39 @@ THEMES = {
         "wallpaper": str(Path(__file__).parent / "wallpapers" / "eink.jpg"),
         "yasb_css": EINK_CSS,
         "neovim_theme": "e-ink",
+    },
+    "Tokyo Night": {
+        "terminal_scheme": "Tokyo Night",
+        "terminal_scheme_def": {
+            "background": "#1a1b26",
+            "black": "#32344a",
+            "blue": "#7aa2f7",
+            "brightBlack": "#444b6a",
+            "brightBlue": "#7aa2f7",
+            "brightCyan": "#7dcfff",
+            "brightGreen": "#9ece6a",
+            "brightPurple": "#bb9af7",
+            "brightRed": "#f7768e",
+            "brightWhite": "#c0caf5",
+            "brightYellow": "#e0af68",
+            "cursorColor": "#c0caf5",
+            "cyan": "#7dcfff",
+            "foreground": "#c0caf5",
+            "green": "#9ece6a",
+            "name": "Tokyo Night",
+            "purple": "#bb9af7",
+            "red": "#f7768e",
+            "selectionBackground": "#3b4261",
+            "white": "#a9b1d6",
+            "yellow": "#e0af68"
+        },
+        "vscode_theme": "Tokyo Night",
+        "cursor_color": "#c0caf5",
+        "glazewm_focused": "#7aa2f7",
+        "glazewm_other": "#3b4261",
+        "wallpaper": str(Path(__file__).parent / "wallpapers" / "tokyo-night.webp"),
+        "yasb_css": TOKYO_NIGHT_CSS,
+        "neovim_theme": "tokyonight",
     },
 }
 
@@ -371,14 +460,19 @@ def update_json_file(path, key, value):
     return data
 
 
-def update_terminal_theme(scheme_name, cursor_color):
+def update_terminal_theme(scheme_name, cursor_color, scheme_def=None):
     content = read_file(TERMINAL_CONFIG)
     data = json_parse(content)
     data["profiles"]["defaults"]["colorScheme"] = scheme_name
+    found = False
     for scheme in data.get("schemes", []):
         if scheme.get("name") == scheme_name:
             scheme["cursorColor"] = cursor_color
+            found = True
             break
+    if not found and scheme_def:
+        scheme_def["cursorColor"] = cursor_color
+        data.setdefault("schemes", []).append(scheme_def)
     write_file(TERMINAL_CONFIG, json.dumps(data, indent=2, ensure_ascii=False))
     print(f"  Terminal scheme -> {scheme_name}")
     print(f"  Terminal cursor color -> {cursor_color}")
@@ -487,7 +581,7 @@ def apply_theme(theme_name):
     theme = THEMES[theme_name]
     print(f"\nApplying theme: {theme_name}")
 
-    update_terminal_theme(theme["terminal_scheme"], theme["cursor_color"])
+    update_terminal_theme(theme["terminal_scheme"], theme["cursor_color"], theme.get("terminal_scheme_def"))
     update_vscode_theme(theme["vscode_theme"])
     update_vscode_terminal_cursor(theme["vscode_theme"], theme["cursor_color"])
     update_neovim_theme(theme["neovim_theme"])
