@@ -430,7 +430,7 @@ THEMES = {
         "cursor_color": "#c0caf5",
         "glazewm_focused": "#7aa2f7",
         "glazewm_other": "#3b4261",
-        "wallpaper": str(Path(__file__).parent / "wallpapers" / "tokyo-night.webp"),
+        "wallpaper": str(Path(__file__).parent / "wallpapers" / "tokyo-night.jpg"),
         "yasb_css": TOKYO_NIGHT_CSS,
         "neovim_theme": "tokyonight",
     },
@@ -447,8 +447,48 @@ def write_file(path, content):
         f.write(content)
 
 
+def strip_jsonc(text):
+    result = []
+    i = 0
+    in_string = False
+    escape = False
+    while i < len(text):
+        c = text[i]
+        if in_string:
+            if escape:
+                escape = False
+            elif c == '\\':
+                escape = True
+            elif c == '"':
+                in_string = False
+            result.append(c)
+            i += 1
+            continue
+        # outside string
+        if c == '"':
+            in_string = True
+            result.append(c)
+            i += 1
+            continue
+        if c == '/' and i + 1 < len(text):
+            if text[i + 1] == '/':
+                while i < len(text) and text[i] not in '\n\r':
+                    i += 1
+                continue
+            if text[i + 1] == '*':
+                i += 2
+                while i + 1 < len(text) and not (text[i] == '*' and text[i + 1] == '/'):
+                    i += 1
+                i += 2
+                continue
+        result.append(c)
+        i += 1
+    return ''.join(result)
+
+
 def json_parse(text):
     text = re.sub(r',(\s*[}\]])', r'\1', text)
+    text = strip_jsonc(text)
     return json.loads(text)
 
 
