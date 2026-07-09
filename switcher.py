@@ -13,6 +13,7 @@ GLAZEWM_CONFIG = Path.home() / ".glzr/glazewm/config.yaml"
 GLAZEWM_CLI = "C:/Program Files/glzr.io/GlazeWM/cli/glazewm.exe"
 NEOVIM_CONFIG = Path.home() / "AppData/Local/nvim"
 NEOVIM_STATE = NEOVIM_CONFIG / "lua/_theme_state.lua"
+FLOWLAUNCHER_SETTINGS = Path.home() / "AppData/Roaming/FlowLauncher/Settings/Settings.json"
 
 ROSE_PINE_CSS = """:root {
     --accent: #c4a7e7;
@@ -360,6 +361,7 @@ THEMES = {
         "wallpaper": str(Path(__file__).parent / "wallpapers" / "catppuccin.jpg"),
         "yasb_css": CATPPUCCIN_CSS,
         "neovim_theme": "catppuccin",
+        "flowlauncher_theme": "CatppuccinMocha",
     },
     "RosePine": {
         "terminal_scheme": "Rose Pine",
@@ -370,6 +372,7 @@ THEMES = {
         "wallpaper": str(Path(__file__).parent / "wallpapers" / "rose-pine.jpg"),
         "yasb_css": ROSE_PINE_CSS,
         "neovim_theme": "rose-pine",
+        "flowlauncher_theme": "RosePine",
     },
     "Everforest": {
         "terminal_scheme": "Everforest Dark",
@@ -380,6 +383,7 @@ THEMES = {
         "wallpaper": str(Path(__file__).parent / "wallpapers" / "everforest.png"),
         "yasb_css": EVERFOREST_CSS,
         "neovim_theme": "everforest",
+        "flowlauncher_theme": "Everforest",
     },
     "Noir": {
         "terminal_scheme": "Noir",
@@ -390,6 +394,7 @@ THEMES = {
         "wallpaper": str(Path(__file__).parent / "wallpapers" / "eink.jpg"),
         "yasb_css": NOIR_CSS,
         "neovim_theme": "moonfly",
+        "flowlauncher_theme": "Noir",
     },
     "E-Ink": {
         "terminal_scheme": "E-Ink",
@@ -400,6 +405,7 @@ THEMES = {
         "wallpaper": str(Path(__file__).parent / "wallpapers" / "eink.jpg"),
         "yasb_css": EINK_CSS,
         "neovim_theme": "e-ink",
+        "flowlauncher_theme": "Eink",
     },
     "Tokyo Night": {
         "terminal_scheme": "Tokyo Night",
@@ -433,6 +439,7 @@ THEMES = {
         "wallpaper": str(Path(__file__).parent / "wallpapers" / "tokyo-night.jpg"),
         "yasb_css": TOKYO_NIGHT_CSS,
         "neovim_theme": "tokyonight",
+        "flowlauncher_theme": "Tokyonight",
     },
 }
 
@@ -605,6 +612,21 @@ def update_neovim_theme(colorscheme):
         print(f"  Neovim IPC skipped (not running or not on PATH): {e}")
 
 
+def update_flowlauncher_theme(theme_name):
+    data = update_json_file(FLOWLAUNCHER_SETTINGS, "Theme", theme_name)
+    print(f"  Flow Launcher theme -> {theme_name}")
+    try:
+        subprocess.run(["taskkill", "/f", "/im", "Flow.Launcher.exe"],
+                       capture_output=True, text=True, timeout=5)
+        subprocess.Popen(
+            [str(Path.home() / "AppData/Local/FlowLauncher/Flow.Launcher.exe")],
+            creationflags=subprocess.DETACHED_PROCESS,
+        )
+        print("  Flow Launcher restarted")
+    except Exception as e:
+        print(f"  Flow Launcher restart skipped: {e}")
+
+
 def set_wallpaper(image_path):
     image_path = str(Path(image_path).resolve())
     SPI_SETDESKWALLPAPER = 0x0014
@@ -625,6 +647,7 @@ def apply_theme(theme_name):
     update_vscode_theme(theme["vscode_theme"])
     update_vscode_terminal_cursor(theme["vscode_theme"], theme["cursor_color"])
     update_neovim_theme(theme["neovim_theme"])
+    update_flowlauncher_theme(theme["flowlauncher_theme"])
     update_yasb_css(theme["yasb_css"])
     update_glazewm_border(theme["glazewm_focused"], theme["glazewm_other"])
     set_wallpaper(theme["wallpaper"])
