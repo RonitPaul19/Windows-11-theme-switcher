@@ -351,6 +351,62 @@ TOKYO_NIGHT_CSS = """:root {
     --yellow: #e0af68;
 }"""
 
+KANAGAWA_CSS = """:root {
+    --accent: #957FB8;
+    --alert-bg: rgb(230, 195, 132);
+    --alert-border: rgb(230, 195, 132);
+    --alert-text: rgb(200, 192, 147);
+    --base: #1F1F28;
+    --black: #000000;
+    --blue: #7E9CD8;
+    --border-dark: #2A2A37;
+    --btn-hover-bg: rgb(220, 215, 186);
+    --button-bg: #363646;
+    --button-hover: rgb(220, 215, 186);
+    --button-pressed: #54546D;
+    --calendar-bg: rgb(31, 31, 40);
+    --calendar-text: rgb(200, 192, 147);
+    --cancel-icon: rgb(228, 104, 118);
+    --cancel-label: rgb(228, 104, 118);
+    --card-bg: rgb(31, 31, 40);
+    --chart: #E6C384;
+    --day-active-bg: rgb(31, 31, 40);
+    --day-active-border: rgb(84, 84, 109);
+    --disabled: #54546D;
+    --edge: #7E9CD8;
+    --firefox: #E46876;
+    --gray: #727169;
+    --green: #98BB6C;
+    --groove-hover: rgb(220, 215, 186);
+    --hourly-bg: #98BB6C;
+    --icon-dim: rgb(220, 215, 186);
+    --lavender: #957FB8;
+    --maroon: #C34043;
+    --mauve: #957FB8;
+    --media-bg: rgb(31, 31, 40);
+    --muted: #727169;
+    --muted-alt: #938AA9;
+    --paused: #727169;
+    --popup-bg: rgb(31, 31, 40);
+    --popup-hover: rgb(54, 54, 70);
+    --spotify: #98BB6C;
+    --subtext0: #DCD7BA;
+    --subtext1: #DCD7BA;
+    --surface0: #2A2A37;
+    --surface1: #363646;
+    --surface2: #54546D;
+    --teal: #7AA89F;
+    --text: #DCD7BA;
+    --text-dim: rgb(220, 215, 186);
+    --text-muted: rgb(200, 192, 147);
+    --transparent: #1F1F28;
+    --transparent-base: #1F1F28;
+    --transparent-dark: #1F1F28;
+    --weather-bg: rgb(31, 31, 40);
+    --white: #ffffff;
+    --yellow: #E6C384;
+}"""
+
 THEMES = {
     "Catppuccin": {
         "terminal_scheme": "Catppuccin Mocha",
@@ -440,6 +496,40 @@ THEMES = {
         "yasb_css": TOKYO_NIGHT_CSS,
         "neovim_theme": "tokyonight",
         "flowlauncher_theme": "Tokyonight",
+    },
+    "Kanagawa": {
+        "terminal_scheme": "Kanagawa",
+        "terminal_scheme_def": {
+            "background": "#1F1F28",
+            "black": "#16161D",
+            "blue": "#7E9CD8",
+            "brightBlack": "#727169",
+            "brightBlue": "#7FB4CA",
+            "brightCyan": "#7AA89F",
+            "brightGreen": "#98BB6C",
+            "brightPurple": "#938AA9",
+            "brightRed": "#E82424",
+            "brightWhite": "#DCD7BA",
+            "brightYellow": "#E6C384",
+            "cursorColor": "#DCD7BA",
+            "cyan": "#6A9589",
+            "foreground": "#DCD7BA",
+            "green": "#76946A",
+            "name": "Kanagawa",
+            "purple": "#957FB8",
+            "red": "#C34043",
+            "selectionBackground": "#2D4F67",
+            "white": "#C8C093",
+            "yellow": "#C0A36E"
+        },
+        "vscode_theme": "Kanagawa",
+        "cursor_color": "#DCD7BA",
+        "glazewm_focused": "#7E9CD8",
+        "glazewm_other": "#54546D",
+        "wallpaper": str(Path(__file__).parent / "wallpapers" / "kanagawa.jpg"),
+        "yasb_css": KANAGAWA_CSS,
+        "neovim_theme": "kanagawa",
+        "flowlauncher_theme": "Kanagawa",
     },
 }
 
