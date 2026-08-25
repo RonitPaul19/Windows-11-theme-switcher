@@ -591,7 +591,7 @@ THEMES = {
     "E-Ink": {
         "terminal_scheme": "E-Ink",
         "terminal_scheme_def": {
-            "background": "#000000",
+            "background": "#ffffff",
             "black": "#000000",
             "blue": "#FFFFFF",
             "brightBlack": "#555555",
@@ -614,7 +614,7 @@ THEMES = {
             "yellow": "#FFFFFF",
         },
         "vscode_theme": "E-Ink",
-        "cursor_color": "#000000",
+        "cursor_color": "#ffffff",
         "glazewm_focused": "#000000",
         "glazewm_other": "#999999",
         "wallpaper": SCRIPT_DIR / "wallpapers" / "eink.jpg",
