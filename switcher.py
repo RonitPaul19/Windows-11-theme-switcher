@@ -585,7 +585,7 @@ THEMES = {
         "glazewm_other": "#333333",
         "wallpaper": SCRIPT_DIR / "wallpapers" / "eink.jpg",
         "yasb_css": NOIR_CSS,
-        "neovim_theme": "moonfly",
+        "neovim_theme": "noir",
         "flowlauncher_theme": "Noir",
     },
     "E-Ink": {
@@ -619,7 +619,7 @@ THEMES = {
         "glazewm_other": "#999999",
         "wallpaper": SCRIPT_DIR / "wallpapers" / "eink.jpg",
         "yasb_css": EINK_CSS,
-        "neovim_theme": "e-ink",
+        "neovim_theme": "theink",
         "flowlauncher_theme": "Eink",
     },
     "Tokyo Night": {
@@ -894,6 +894,21 @@ def update_yasb_css(css_root: str):
 
 
 # ============================================================
+# Neovim
+# ============================================================
+
+
+def update_neovim_theme(neovim_theme: str):
+    state_file = NEOVIM_STATE
+
+    content = f'vim.g.theme_name = "{neovim_theme}"\n'
+
+    write_file(state_file, content)
+
+    print(f"  Neovim colorscheme    -> {neovim_theme}")
+
+
+# ============================================================
 # Wallpaper
 # ============================================================
 
@@ -960,6 +975,10 @@ def apply_theme(theme_name: str):
 
         update_yasb_css(
             theme["yasb_css"],
+        )
+
+        update_neovim_theme(
+            theme["neovim_theme"],
         )
 
         print()
