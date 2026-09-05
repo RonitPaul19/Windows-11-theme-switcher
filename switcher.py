@@ -483,7 +483,7 @@ THEMES = {
         "glazewm_other": "#585B70",
         "wallpaper": SCRIPT_DIR / "wallpapers" / "catppuccin.jpg",
         "yasb_css": CATPPUCCIN_CSS,
-        "neovim_theme": "catppuccin",
+        "neovim_theme": "catppuccin-mocha",
         "flowlauncher_theme": "CatppuccinMocha",
     },
     "RosePine": {
