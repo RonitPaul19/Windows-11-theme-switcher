@@ -622,7 +622,7 @@ THEMES = {
         "neovim_theme": "theink",
         "flowlauncher_theme": "Eink",
     },
-    "Tokyo Night": {
+    "TokyoNight": {
         "terminal_scheme": "Tokyo Night",
         "terminal_scheme_def": {
             "background": "#1a1b26",
