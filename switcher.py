@@ -4,8 +4,12 @@ import ctypes
 import json
 import os
 import re
+import queue
+import signal
 import subprocess
 import sys
+import threading
+import tkinter as tk
 from pathlib import Path
 
 
@@ -454,29 +458,6 @@ KANAGAWA_CSS = """:root {
 THEMES = {
     "Catppuccin": {
         "terminal_scheme": "Catppuccin Mocha",
-        "terminal_scheme_def": {
-            "background": "#1E1E2E",
-            "black": "#45475A",
-            "blue": "#89B4FA",
-            "brightBlack": "#585B70",
-            "brightBlue": "#89B4FA",
-            "brightCyan": "#94E2D5",
-            "brightGreen": "#A6E3A1",
-            "brightPurple": "#F5C2E7",
-            "brightRed": "#F38BA8",
-            "brightWhite": "#A6ADC8",
-            "brightYellow": "#F9E2AF",
-            "cursorColor": "#F5E0DC",
-            "cyan": "#89DCEB",
-            "foreground": "#CDD6F4",
-            "green": "#A6E3A1",
-            "name": "Catppuccin Mocha",
-            "purple": "#CBA6F7",
-            "red": "#F38BA8",
-            "selectionBackground": "#585B70",
-            "white": "#BAC2DE",
-            "yellow": "#F9E2AF",
-        },
         "vscode_theme": "Catppuccin Mocha",
         "cursor_color": "#F5E0DC",
         "glazewm_focused": "#89B4FA",
@@ -488,29 +469,6 @@ THEMES = {
     },
     "RosePine": {
         "terminal_scheme": "Rose Pine",
-        "terminal_scheme_def": {
-            "background": "#191724",
-            "black": "#26233A",
-            "blue": "#9CCFD8",
-            "brightBlack": "#6E6A86",
-            "brightBlue": "#9CCFD8",
-            "brightCyan": "#9CCFD8",
-            "brightGreen": "#9CCFD8",
-            "brightPurple": "#C4A7E7",
-            "brightRed": "#EB6F92",
-            "brightWhite": "#E0DEF4",
-            "brightYellow": "#F6C177",
-            "cursorColor": "#E0DEF4",
-            "cyan": "#9CCFD8",
-            "foreground": "#E0DEF4",
-            "green": "#31748F",
-            "name": "Rose Pine",
-            "purple": "#C4A7E7",
-            "red": "#EB6F92",
-            "selectionBackground": "#403D52",
-            "white": "#E0DEF4",
-            "yellow": "#F6C177",
-        },
         "vscode_theme": "Rosé Pine",
         "cursor_color": "#6e6a86",
         "glazewm_focused": "#9CCFD8",
@@ -522,29 +480,6 @@ THEMES = {
     },
     "Everforest": {
         "terminal_scheme": "Everforest Dark",
-        "terminal_scheme_def": {
-            "background": "#2D353B",
-            "black": "#475258",
-            "blue": "#7FBBB3",
-            "brightBlack": "#859289",
-            "brightBlue": "#7FBBB3",
-            "brightCyan": "#83C092",
-            "brightGreen": "#A7C080",
-            "brightPurple": "#D699B6",
-            "brightRed": "#E67E80",
-            "brightWhite": "#D3C6AA",
-            "brightYellow": "#DBBC7F",
-            "cursorColor": "#D3C6AA",
-            "cyan": "#83C092",
-            "foreground": "#D3C6AA",
-            "green": "#A7C080",
-            "name": "Everforest Dark",
-            "purple": "#D699B6",
-            "red": "#E67E80",
-            "selectionBackground": "#4F585E",
-            "white": "#D3C6AA",
-            "yellow": "#DBBC7F",
-        },
         "vscode_theme": "Everforest Pro Dark",
         "cursor_color": "#D3C6AA",
         "glazewm_focused": "#7FBBB3",
@@ -556,29 +491,6 @@ THEMES = {
     },
     "Noir": {
         "terminal_scheme": "Noir",
-        "terminal_scheme_def": {
-            "background": "#000000",
-            "black": "#000000",
-            "blue": "#FFFFFF",
-            "brightBlack": "#555555",
-            "brightBlue": "#FFFFFF",
-            "brightCyan": "#FFFFFF",
-            "brightGreen": "#FFFFFF",
-            "brightPurple": "#FFFFFF",
-            "brightRed": "#FFFFFF",
-            "brightWhite": "#FFFFFF",
-            "brightYellow": "#FFFFFF",
-            "cursorColor": "#FFFFFF",
-            "cyan": "#FFFFFF",
-            "foreground": "#FFFFFF",
-            "green": "#FFFFFF",
-            "name": "Noir",
-            "purple": "#FFFFFF",
-            "red": "#FFFFFF",
-            "selectionBackground": "#333333",
-            "white": "#FFFFFF",
-            "yellow": "#FFFFFF",
-        },
         "vscode_theme": "Monochrome Dark",
         "cursor_color": "#FFFFFF",
         "glazewm_focused": "#808080",
@@ -590,31 +502,8 @@ THEMES = {
     },
     "E-Ink": {
         "terminal_scheme": "E-Ink",
-        "terminal_scheme_def": {
-            "background": "#ffffff",
-            "black": "#000000",
-            "blue": "#FFFFFF",
-            "brightBlack": "#555555",
-            "brightBlue": "#FFFFFF",
-            "brightCyan": "#FFFFFF",
-            "brightGreen": "#FFFFFF",
-            "brightPurple": "#FFFFFF",
-            "brightRed": "#FFFFFF",
-            "brightWhite": "#FFFFFF",
-            "brightYellow": "#FFFFFF",
-            "cursorColor": "#FFFFFF",
-            "cyan": "#FFFFFF",
-            "foreground": "#FFFFFF",
-            "green": "#FFFFFF",
-            "name": "E-Ink",
-            "purple": "#FFFFFF",
-            "red": "#FFFFFF",
-            "selectionBackground": "#2F2F2F",
-            "white": "#FFFFFF",
-            "yellow": "#FFFFFF",
-        },
         "vscode_theme": "E-Ink",
-        "cursor_color": "#ffffff",
+        "cursor_color": "#000000",
         "glazewm_focused": "#000000",
         "glazewm_other": "#999999",
         "wallpaper": SCRIPT_DIR / "wallpapers" / "eink.jpg",
@@ -624,29 +513,6 @@ THEMES = {
     },
     "TokyoNight": {
         "terminal_scheme": "Tokyo Night",
-        "terminal_scheme_def": {
-            "background": "#1a1b26",
-            "black": "#32344a",
-            "blue": "#7aa2f7",
-            "brightBlack": "#444b6a",
-            "brightBlue": "#7aa2f7",
-            "brightCyan": "#7dcfff",
-            "brightGreen": "#9ece6a",
-            "brightPurple": "#bb9af7",
-            "brightRed": "#f7768e",
-            "brightWhite": "#c0caf5",
-            "brightYellow": "#e0af68",
-            "cursorColor": "#c0caf5",
-            "cyan": "#7dcfff",
-            "foreground": "#c0caf5",
-            "green": "#9ece6a",
-            "name": "Tokyo Night",
-            "purple": "#bb9af7",
-            "red": "#f7768e",
-            "selectionBackground": "#3b4261",
-            "white": "#a9b1d6",
-            "yellow": "#e0af68",
-        },
         "vscode_theme": "Tokyo Night",
         "cursor_color": "#c0caf5",
         "glazewm_focused": "#7aa2f7",
@@ -658,29 +524,6 @@ THEMES = {
     },
     "Kanagawa": {
         "terminal_scheme": "Kanagawa",
-        "terminal_scheme_def": {
-            "background": "#1F1F28",
-            "black": "#16161D",
-            "blue": "#7E9CD8",
-            "brightBlack": "#727169",
-            "brightBlue": "#7FB4CA",
-            "brightCyan": "#7AA89F",
-            "brightGreen": "#98BB6C",
-            "brightPurple": "#938AA9",
-            "brightRed": "#E82424",
-            "brightWhite": "#DCD7BA",
-            "brightYellow": "#E6C384",
-            "cursorColor": "#DCD7BA",
-            "cyan": "#6A9589",
-            "foreground": "#DCD7BA",
-            "green": "#76946A",
-            "name": "Kanagawa",
-            "purple": "#957FB8",
-            "red": "#C34043",
-            "selectionBackground": "#2D4F67",
-            "white": "#C8C093",
-            "yellow": "#C0A36E",
-        },
         "vscode_theme": "Kanagawa",
         "cursor_color": "#DCD7BA",
         "glazewm_focused": "#7E9CD8",
@@ -786,7 +629,6 @@ def update_json_file(path: Path, key: str, value):
 def update_terminal_theme(
     scheme_name: str,
     cursor_color: str,
-    scheme_def=None,
 ):
     check_file(TERMINAL_CONFIG, "Windows Terminal settings")
 
@@ -796,18 +638,10 @@ def update_terminal_theme(
         scheme_name
     )
 
-    found = False
-
     for scheme in data.get("schemes", []):
         if scheme.get("name") == scheme_name:
             scheme["cursorColor"] = cursor_color
-            found = True
             break
-
-    if not found and scheme_def:
-        scheme_def = scheme_def.copy()
-        scheme_def["cursorColor"] = cursor_color
-        data.setdefault("schemes", []).append(scheme_def)
 
     write_file(
         TERMINAL_CONFIG,
@@ -961,7 +795,6 @@ def apply_theme(theme_name: str):
         update_terminal_theme(
             theme["terminal_scheme"],
             theme["cursor_color"],
-            theme.get("terminal_scheme_def"),
         )
 
         update_vscode_theme(
@@ -1005,15 +838,182 @@ def apply_theme(theme_name: str):
 
 
 # ============================================================
+# Hotkey listener
+# ============================================================
+
+HOTKEY_ID = 1
+MOD_CONTROL = 0x0002
+MOD_ALT = 0x0001
+VK_T = 0x54
+WM_HOTKEY = 0x0312
+
+_hotkey_queue = queue.Queue()
+
+_WNDPROC = ctypes.WINFUNCTYPE(
+    ctypes.c_longlong,
+    ctypes.c_void_p,
+    ctypes.c_uint,
+    ctypes.c_ulonglong,
+    ctypes.c_longlong,
+)
+
+
+class _POINT(ctypes.Structure):
+    _fields_ = [("x", ctypes.c_long), ("y", ctypes.c_long)]
+
+
+class _MSG(ctypes.Structure):
+    _fields_ = [
+        ("hwnd", ctypes.c_void_p),
+        ("message", ctypes.c_uint),
+        ("wParam", ctypes.c_ulonglong),
+        ("lParam", ctypes.c_longlong),
+        ("time", ctypes.c_uint),
+        ("pt", _POINT),
+    ]
+
+
+class _WNDCLASSEX(ctypes.Structure):
+    _fields_ = [
+        ("cbSize", ctypes.c_uint),
+        ("style", ctypes.c_uint),
+        ("lpfnWndProc", ctypes.c_void_p),
+        ("cbClsExtra", ctypes.c_int),
+        ("cbWndExtra", ctypes.c_int),
+        ("hInstance", ctypes.c_void_p),
+        ("hIcon", ctypes.c_void_p),
+        ("hCursor", ctypes.c_void_p),
+        ("hbrBackground", ctypes.c_void_p),
+        ("lpszMenuName", ctypes.c_wchar_p),
+        ("lpszClassName", ctypes.c_wchar_p),
+        ("hIconSm", ctypes.c_void_p),
+    ]
+
+
+@_WNDPROC
+def _hotkey_wnd_proc(hwnd, msg, wparam, lparam):
+    if msg == WM_HOTKEY:
+        _hotkey_queue.put(True)
+    return ctypes.windll.user32.DefWindowProcW(hwnd, msg, wparam, lparam)
+
+
+def _hotkey_listener_thread():
+    user32 = ctypes.windll.user32
+    kernel32 = ctypes.windll.kernel32
+
+    user32.DefWindowProcW.restype = ctypes.c_longlong
+
+    class_name = "_ThemeSwitcherHotkey"
+    h_instance = kernel32.GetModuleHandleW(None)
+
+    wc = _WNDCLASSEX()
+    wc.cbSize = ctypes.sizeof(_WNDCLASSEX)
+    wc.lpfnWndProc = _hotkey_wnd_proc
+    wc.hInstance = h_instance
+    wc.lpszClassName = class_name
+
+    user32.RegisterClassExW(ctypes.byref(wc))
+
+    hwnd = user32.CreateWindowExW(
+        0,
+        class_name,
+        None,
+        0,
+        0,
+        0,
+        0,
+        0,
+        3,
+        0,
+        h_instance,
+        None,
+    )
+
+    if not hwnd:
+        return
+
+    if not user32.RegisterHotKey(hwnd, HOTKEY_ID, MOD_CONTROL | MOD_ALT, VK_T):
+        _hotkey_queue.put("error:failed_to_register")
+        return
+
+    msg = _MSG()
+    while user32.GetMessageW(ctypes.byref(msg), 0, 0, 0) > 0:
+        user32.TranslateMessage(ctypes.byref(msg))
+        user32.DispatchMessageW(ctypes.byref(msg))
+
+    user32.UnregisterHotKey(hwnd, HOTKEY_ID)
+    user32.DestroyWindow(hwnd)
+
+
+def _apply_theme_from_menu(menu, theme_name):
+    menu.grab_release()
+    menu.destroy()
+    threading.Thread(target=apply_theme, args=(theme_name,), daemon=True).start()
+
+
+def show_theme_menu(root):
+    menu = tk.Menu(root, tearoff=0)
+
+    for name in THEMES:
+        menu.add_command(
+            label=name,
+            command=lambda n=name: _apply_theme_from_menu(menu, n),
+        )
+
+    try:
+        menu.tk_popup(root.winfo_pointerx(), root.winfo_pointery())
+    finally:
+        menu.grab_release()
+
+
+def listen():
+    root = tk.Tk()
+    root.withdraw()
+
+    t = threading.Thread(target=_hotkey_listener_thread, daemon=True)
+    t.start()
+
+    def poll():
+        try:
+            event = _hotkey_queue.get_nowait()
+            if isinstance(event, str) and event.startswith("error:"):
+                print(f"  Hotkey registration failed: {event.split(':', 1)[1]}")
+                root.destroy()
+                return
+            show_theme_menu(root)
+        except queue.Empty:
+            pass
+        root.after(50, poll)
+
+    root.after(50, poll)
+
+    def on_sigint(sig, frame):
+        root.after(0, root.destroy)
+
+    signal.signal(signal.SIGINT, on_sigint)
+
+    print()
+    print("Listening for Ctrl+Alt+T ...")
+    print("Press Ctrl+C to exit.")
+    print()
+    root.mainloop()
+
+
+# ============================================================
 # CLI
 # ============================================================
 
 
 def main():
+    if len(sys.argv) >= 2 and sys.argv[1] == "--listen":
+        listen()
+        return 0
+
     if len(sys.argv) < 2:
         print()
         print("Usage:")
         print("  theme <theme-name>")
+        print("  theme --listen     (open theme menu with Ctrl+Alt+T)")
         print()
         print("Available themes:")
 
